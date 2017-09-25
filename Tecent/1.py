@@ -26,9 +26,5 @@ while n>0:
       n = n-1
 print(color)
 
-for col1 in color:
-        for col2 in color:
-            if
- 	  
 
 
