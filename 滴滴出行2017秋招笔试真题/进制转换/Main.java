@@ -16,6 +16,27 @@
 111
 */
 
+import java.util.*;
 public class Main{
-	
+    public static void main(String args[]){
+        Scanner sc =new Scanner(System.in);
+        while(sc.hasNext()){
+            int m = sc.nextInt();
+            int n = sc.nextInt();
+            char[] digit = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+            Stack<Character> stack = new Stack<Character>();
+            if (m < 0) {
+             	System.out.print("-");
+             	m = -m;
+             } 
+            while(m > 0){
+                 stack.push(digit[m%n]);
+                 m /= n;
+            }
+            while(!stack.isEmpty()){
+            	System.out.print(stack.pop());
+            }
+            System.out.println();
+        }
+    }
 }
