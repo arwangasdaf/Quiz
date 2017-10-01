@@ -30,48 +30,92 @@
 
 import java.util.*;
 public class Main{
+    public static int m = 0;
+    public static int n = 0;
+    public static int p = 0;
+    public static int mincost = Integer.MAX_VALUE;
+    public static LinkedList<point> linkedlist = new LinkedList<point>();
+    public static String path = "";
 
-    static int[] dx = {};
-    static int[] dy - {};
-    public static Queue<point> find(int[] nums , int m , int n , int p , Queue<point> poi , int x , int y){
-         if ((x==0) && (y==m-1) && p>=0) {
-            return poi;
-         }
+    //进行深度优先遍历
+    public static void find(int[][] map , int x , int y , int currentcost){
+        if (currentcost > p) {
+            return;
+        }
 
-         for (int i=0 ; ; ) {
-             
-         }
+        map[x][y] = 2;
+        linkedlist.offer(new point(x , y));
+        if (x == 0 && y == m-1) {
+            if (currentcost < mincost) {
+                mincost = currentcost;
+                savepath();
+            }
+
+            map[0][m-1] = 1;
+            linkedlist.removeLast();
+            return;
+        }
+        //down
+        if (x < n-1 && map[x+1][y] == 1) {
+           find(map , x+1 , y , currentcost);
+        }
+        //up
+        if (x > 0 && map[x -1 ][y] == 1) {
+           find(map , x-1 , y , currentcost + 3);
+        }
+        //left
+        if (y > 0 && map[x][y-1] == 1) {
+           find(map , x , y -1 ,currentcost + 1);
+        }
+        //right
+        if (y < m-1 && map[x][y+1] == 1) {
+           find(map , x , y+1 , currentcost + 1);
+        }
+
+        map[x][y] = 1;
+        linkedlist.removeLast();
+    }
+
+
+    public static void savepath(){
+      Iterator iter = linkedlist.iterator();
+      StringBuilder su = new StringBuilder();
+      while(iter.hasNext()){
+        point po = (point)iter.next();
+        su.append("[").append(po.x).append(",").append(po.y).append("],");
+      }
+      path = su.toString();
     }
 
     
     public static void main(String args[]){
         Scanner sc =new Scanner(System.in);
         while(sc.hasNext()){
-            int m = sc.nextInt();  //row
-            int n = sc.nextInt();  //column
-            int p = sc.nextInt();  //strength
-            int[][] nums = new int[m][n];
+            n = sc.nextInt();  //row
+            m = sc.nextInt();  //column
+            p = sc.nextInt();  //strength
+            int[][] nums = new int[n][m];
             for (int i=0 ; i<m ; i++) {
                 for (int j=0 ; j<n ; j++) {
                   nums[i][j] = sc.nextInt();
                 }
             }
 
-            Queue<point> poi = new LinkedList<>();
-            //dfs search
-
-            if (find(nums , m , n , p , poi , 0 , 0)) {
-                
+            if (mincost == Integer.MAX_VALUE) {
+               System.out.println("cant not escape");
+            }else{
+               System.out.println(path.substring(0 , path.length() - 1));
             }
+            
         }
     }
 
-    static class point{
-      private int x;
-      private int y;
-      public point(int x , int y){
-        this.x = x;
-        this.y = y;
-      }
+    public static class point{
+           private int x = 0;
+           private int y = 0;
+           public point(int x , int y){
+                  this.x = x;
+                  this.y = y;
+           }
     }
 }
